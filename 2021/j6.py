@@ -33,7 +33,7 @@ def calc_growth(fish, days):
     return sum(day_fish)
 
 
-fish = List([f for f in open("./2021/j6.txt").read().split(",")])
+fish = List([f for f in open("./2021/j6.txt").read().split(",")]).map(int)
 
 print(calc_growth(fish, 80))
 print(calc_growth(fish, 256))
