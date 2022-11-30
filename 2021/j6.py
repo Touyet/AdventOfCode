@@ -1,3 +1,6 @@
+from tools.utils import List
+
+
 def main():
     data = ""
     with open('./2021/j6.txt', 'r') as f:
@@ -30,7 +33,7 @@ def calc_growth(fish, days):
     return sum(day_fish)
 
 
-fish = list(map(int, [f for f in open("./2021/j6.txt").read().split(",")]))
+fish = List([f for f in open("./2021/j6.txt").read().split(",")])
 
 print(calc_growth(fish, 80))
 print(calc_growth(fish, 256))
