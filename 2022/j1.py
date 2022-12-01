@@ -18,7 +18,6 @@ top3 = max(sumCal)
 sumCal.remove(top3)
 for i in range(0, 2):
     m = max(sumCal)
-    print(m)
     top3 = top3 + m
     sumCal.remove(m)
 print(top3)
