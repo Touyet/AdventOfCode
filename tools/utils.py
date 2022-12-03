@@ -1,5 +1,5 @@
-from typing import Any, Callable, Generic, Iterator, SupportsIndex, TypeVar, Union
-
+from typing import (Any, Callable, Generic, Iterator, SupportsIndex, TypeVar,
+                    Union)
 
 _T = TypeVar("_T")
 _V = TypeVar("_V")
@@ -20,8 +20,8 @@ class List(list, Generic[_T]):
             return fnc
         return defaultValue
 
-    def filter(self, fnc: Callable[[_T], bool]) -> "List[_T]":
-        return List([x for x in self if fnc(x)])
+    def filter(self, fnc: Callable[[_T, int], bool]) -> "List[_T]":
+        return List([x[1] for x in enumerate(self) if fnc(x[1], x[0])])
 
     def map(self, fnc: Callable[[_T], _V]) -> "List[_V]":
         return List([fnc(x) for x in self])
