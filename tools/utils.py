@@ -43,3 +43,6 @@ class List(list, Generic[_T]):
             return False
         self.append(elt)
         return True
+
+
+alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
