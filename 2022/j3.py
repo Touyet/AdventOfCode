@@ -18,7 +18,6 @@ res2 = 0
 for index in range(0, len(compartmentList), 3):
     (item1, item2, item3) = (
         compartmentList[index], compartmentList[index+1], compartmentList[index+2])
-    # print(item1, item2, item3)
     priorityItem = set(item1).intersection(item2).intersection(item3).pop()
     res2 = res2 + alphabet.index(priorityItem)+1
 
