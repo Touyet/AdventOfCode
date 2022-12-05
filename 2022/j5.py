@@ -24,9 +24,6 @@ crates = [
     ["R", "N", "C", "L", "D", "Z", "G"],
 ]
 
-for i in range(100):
-    crates.append([])
-
 instructions = []
 for i in input:
     ins = i.split(' ')
