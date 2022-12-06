@@ -14,9 +14,9 @@ class List(list, Generic[_T]):
         return super().__getitem__(i)
 
     def find(self, fnc: Union[Callable[[_T], bool], _T], defaultValue=None) -> _T:
-        if(callable(fnc)):
+        if (callable(fnc)):
             return next((x for x in self if fnc(x)), defaultValue)
-        if(fnc in self):
+        if (fnc in self):
             return fnc
         return defaultValue
 
@@ -27,7 +27,7 @@ class List(list, Generic[_T]):
         return List([fnc(x) for x in self])
 
     def appendIfNew(self, elt: _T):
-        if(elt in self):
+        if (elt in self):
             return False
         self.append(elt)
         return True
@@ -39,10 +39,15 @@ class List(list, Generic[_T]):
         pass
 
     def appendIfNewAndDefined(self, elt: _T):
-        if(elt in self or elt is None):
+        if (elt in self or elt is None):
             return False
         self.append(elt)
         return True
+
+    def rotate(self, nb: int) -> None:
+        s = self[nb:]+self[:nb]
+        for i, v in enumerate(s):
+            self[i] = v
 
 
 alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
