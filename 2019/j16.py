@@ -1,27 +1,38 @@
+from time import perf_counter
+
 from tools.utils import List
 
 input = open("./2019/j16.txt").read().strip()
 # input = "80871224585914546619083218645595"
+# input = "12345678"
+basePattern = List([0, 1, 0, -1])
+basePattern.rotate(1)
 
-basePattern = [0, 1, 0, -1]
-patterns = List()
-for i, j in enumerate(input):
-    p = List()
-    for b in basePattern:
-        for inc in range(i+1):
-            p.append(b)
-    p.rotate(1)
-    patterns.append(p)
+b = len(basePattern)
+l = len(input)
 
-for phase in range(100):
+t1 = perf_counter()
+m = 0
+p = 0
+while p < 100:
     nextInput = ""
-    for i in range(len(input)):
-        pattern = patterns[i]
+    n = 0
+    while n < l:
         nextValue = 0
         for index, value in enumerate(input):
-            patternValue = index % len(pattern)
-            nextValue += int(value) * pattern[patternValue]
+            m += 1
+            # if (index < n):
+            #     continue
+            # else:
+            j = (index if n == 0 else ((index)//(n+1))) % b
+            patternValue = basePattern[j]
+            nextValue += int(value) * patternValue
         nextInput += str(nextValue)[-1]
+        input = input[1:]
+        n += 1
+    p += 1
     input = nextInput
 
-print(input[:8])
+t2 = perf_counter()
+print(round(t2-t1), "s", m, "loop")
+print("res", input[:8])
