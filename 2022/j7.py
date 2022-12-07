@@ -1,6 +1,6 @@
 from tools.utils import List
 
-input: "list[str]" = open("./2022/j7Test.txt").read().strip().splitlines()
+input: "list[str]" = open("./2022/j7.txt").read().strip().splitlines()
 
 
 class FS:
@@ -9,6 +9,7 @@ class FS:
     parent: "FS"
     children: List["FS"]
     size: int
+    seen = False
 
     def __init__(self, name: str, isDir=False, size=0, parent: "FS" = None) -> None:
         self.children = List()
@@ -19,9 +20,6 @@ class FS:
 
     def getTotalSize(self) -> int:
         res = self.size
-        if(self.isDir):
-            for i in self.children:
-                res += i.getTotalSize()
         return res
 
 
@@ -29,9 +27,9 @@ fs: FS = None
 
 
 def navigate(fs: FS, command):
-    if(fs is None):
+    if (fs is None):
         fs = FS(name=command[2], isDir=True)
-    elif(command[2] == ".."):
+    elif (command[2] == ".."):
         fs = fs.parent
     else:
         child = FS(name=command[2], isDir=True, parent=fs)
@@ -43,22 +41,42 @@ def navigate(fs: FS, command):
 waitUntilNextCD = False
 for command in input:
     c = command.split(' ')
-    if(c[0] == "$"):
+    if (c[0] == "$"):
         instruction = c[1]
-        if(instruction == "cd"):
+        if (instruction == "cd"):
             fs = navigate(fs, c)
 
-    if(c[0].isnumeric()):
+    if (c[0].isnumeric()):
         file = FS(name=c[1], isDir=False, size=int(c[0]), parent=fs)
         fs.children.append(file)
 
-s = 0
-t = 100000
 while fs.parent is not None:
-    size = fs.getTotalSize()
-    if(size < t):
-        s += size
-
     fs = fs.parent
 
-print(s)
+# We are in / directory
+s = 0
+t = 100000
+dir = List()
+
+
+def through(fs: FS) -> int:
+    global s, t
+    size = fs.getTotalSize()
+    for child in fs.children:
+        size += through(child)
+    if (fs.isDir and size < t):
+        s += size
+    fs.size = size
+    if (fs.isDir):
+        dir.append(fs)
+    return size
+
+
+through(fs)
+total = 70000000 - fs.size
+necessary = 30000000
+d = abs(total-necessary)
+
+sDir = dir.map(lambda v: v.size).filter(lambda v, i: v >= d)
+
+print(s, min(sDir))
