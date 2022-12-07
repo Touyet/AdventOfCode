@@ -1,4 +1,3 @@
-import sys
 from tools.utils import List
 
 
@@ -20,11 +19,11 @@ def p2(data: List[str]):
     floor = 0
     for i in range(len(data)):
         char = data[i]
-        if(char == "("):
+        if (char == "("):
             floor = floor+1
         elif (char == ")"):
             floor = floor-1
-        if(floor == -1):
+        if (floor == -1):
             return i+1
 
 
