@@ -49,5 +49,11 @@ class List(list, Generic[_T]):
         for i, v in enumerate(s):
             self[i] = v
 
+    def join(self) -> str:
+        s = ""
+        for i in self:
+            s += i.__str__()
+        return s
+
 
 alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
