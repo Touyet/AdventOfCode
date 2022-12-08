@@ -13,6 +13,9 @@ class List(list, Generic[_T]):
     def __getitem__(self, i: SupportsIndex) -> _T:
         return super().__getitem__(i)
 
+    def append(self, __object: _T) -> None:
+        return super().append(__object)
+
     def find(self, fnc: Union[Callable[[_T], bool], _T], defaultValue=None) -> _T:
         if (callable(fnc)):
             return next((x for x in self if fnc(x)), defaultValue)
