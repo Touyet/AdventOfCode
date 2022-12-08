@@ -9,7 +9,6 @@ class FS:
     parent: "FS"
     children: List["FS"]
     size: int
-    seen = False
 
     def __init__(self, name: str, isDir=False, size=0, parent: "FS" = None) -> None:
         self.children = List()
@@ -38,7 +37,6 @@ def navigate(fs: FS, command):
     return fs
 
 
-waitUntilNextCD = False
 for command in input:
     c = command.split(' ')
     if (c[0] == "$"):
