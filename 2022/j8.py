@@ -2,62 +2,58 @@ from tools.utils import List
 
 grid = List(open("./2022/j8.txt").read().strip().splitlines()
             ).map(lambda v: List(v).map(int))
+# grid = List(open("./2022/j8Test.txt").read().strip().splitlines()
+#             ).map(lambda v: List(v).map(int))
 
-res = 0
-
-
-class Row:
-    def __init__(self, x: int, content: list[int]) -> None:
-        self.x = x
-        self.content = content
-
-
-class Column:
-    def __init__(self, y: int, content: list[int]) -> None:
-        self.y = y
-        self.content = content
-
-
-rows: "List[Row]" = List([Row(i, x) for i, x in enumerate(grid)])
-columns: "List[Column]" = List([Column(i, []) for i in range(len(grid[0]))])
+rows: "List[int]" = List([x for i, x in enumerate(grid)])
+columns: "List[int]" = List([[]for i in range(len(grid[0]))])
 
 for row in rows:
-    for y, c in enumerate(row.content):
-        columns[y].content.append(c)
+    for y, c in enumerate(row):
+        columns[y].append(c)
 
-res = 0
-for row in rows:
-    # First and last row are always visible
-    if (row.x == 0 or row.x == (len(rows)-1)):
-        res += len(row.content)
-        continue
-    x = row.x
+visible = (len(rows[0]) * 4) - 4  # EDGE
+scenic = 0
+for row in range(1, len(rows) - 1):
+    for column in range(1, len(rows) - 1):
+        tree = rows[row][column]
 
-    for y, value in enumerate(row.content):
-        column = columns[y]
+        right = rows[row][column + 1:]
+        left = rows[row][:column]
+        down = columns[column][row + 1:]
+        up = columns[column][:row]
 
-        # First and last column are always visible
-        if (column.y == 0 or column.y == (len(columns)-1)):
-            res += 1
-            continue
+        left.reverse()
+        up.reverse()
 
-        if (value == max(row.content) or value == max(column.content)):
-            res += 1
-            continue
-        if (value == min(row.content) or value == min(column.content)):
-            continue
+        right_visible = tree > max(right)
+        left_visible = tree > max(left)
+        down_visible = tree > max(down)
+        up_visible = tree > max(up)
 
-        left = [1 for i, j in enumerate(row.content) if (
-            j >= value and i > y)]
-        right = [1 for i, j in enumerate(row.content) if (
-            j >= value and i < y)]
-        up = [1 for i, j in enumerate(column.content) if (
-            j >= value and i > x)]
-        down = [1 for i, j in enumerate(column.content) if (
-            j >= value and i < x)]
+        if right_visible or left_visible or up_visible or down_visible:
+            visible += 1
 
-        if (len(down) == 0 or len(up) == 0 or len(left) == 0 or len(right) == 0):
-            res += 1
-            continue
+        scene_right = 0
+        scene_left = 0
+        scene_up = 0
+        scene_down = 0
+        for r in right:
+            scene_right += 1
+            if (tree <= r):
+                break
+        for r in left:
+            scene_left += 1
+            if (tree <= r):
+                break
+        for r in up:
+            scene_up += 1
+            if (tree <= r):
+                break
+        for r in down:
+            scene_down += 1
+            if (tree <= r):
+                break
+        scenic = max(scenic, scene_down*scene_left*scene_right*scene_up)
 
-print(res)
+print(visible, scenic)
