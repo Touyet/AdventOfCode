@@ -78,7 +78,6 @@ def p2(grid: list[list[Point]], s: Point):
 
             for i in range(len(tails)):
                 if (i == 0):
-                    previousTail = head
                     previousHead = h
 
                 tail = tails[i]
