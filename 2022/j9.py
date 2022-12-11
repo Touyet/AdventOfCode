@@ -38,7 +38,7 @@ s = grid[startX][startY]
 grid[s.x][s.y].visited = True
 
 
-def p1(grid: list[list[Point]], s: Point):
+def p1(grid: "list[list[Point]]", s: Point):
     head = s
     tail = s
     res = 1
@@ -64,7 +64,7 @@ def p1(grid: list[list[Point]], s: Point):
     return res
 
 
-def p2(grid: list[list[Point]], s: Point):
+def p2(grid: "list[list[Point]]", s: Point):
     head = s
     tails = [s for i in range(9)]
     res: set[Point] = set([s])
