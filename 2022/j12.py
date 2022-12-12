@@ -59,9 +59,9 @@ class Node:
 
         return l
 
-    def distance(self, node: "Node") -> int:
+    def level(self, node: "Node") -> int:
         d = self.elevation - node.elevation
-        if (d >= 0 and d < 2):
+        if (d < 2):
             return 1
         return 1000
 
@@ -101,19 +101,25 @@ def a_star(start: Node, end: Node):
             break
         neighbors = currentNode.neighbors(nodeGrid)
         for neighbor in neighbors:
-            neighbor.h = neighbor.distance(
-                currentNode)+manhattan(neighbor, end)
+            n = Node(neighbor)
+            n.h = currentNode.h + n.level(currentNode) + manhattan(n, end)
             if (neighbor not in closed_list and neighbor not in open_list):
-                neighbor.parent = currentNode
-                open_list.append(Node(neighbor))
-                nodeGrid[neighbor.x][neighbor.y] = neighbor
+                n.parent = currentNode
+                open_list.append(n)
+                nodeGrid[neighbor.x][neighbor.y] = n
             elif (neighbor in open_list and neighbor.parent != currentNode):
                 past = open_list.find(neighbor)
-                if (neighbor.h < past.h):
-                    neighbor.parent = currentNode
-                    open_list.append(Node(neighbor))
-                    nodeGrid[neighbor.x][neighbor.y] = neighbor
-    return steps
+                if (n.h < past.h):
+                    n.parent = currentNode
+                    open_list.append(n)
+                    nodeGrid[neighbor.x][neighbor.y] = n
+    n = closed_list.pop()
+    res = []
+    while n.parent is not None:
+        res.append(n)
+        n = n.parent
+
+    return len(res)
 
 
 a = a_star(start, end)
